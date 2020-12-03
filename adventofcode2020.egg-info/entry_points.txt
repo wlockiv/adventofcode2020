@@ -1,3 +1,0 @@
-[console_scripts]
-aoc2020 = adventofcode2020.cli:cli
-
