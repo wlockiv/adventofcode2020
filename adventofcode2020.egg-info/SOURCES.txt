@@ -1,0 +1,14 @@
+setup.py
+adventofcode2020/__init__.py
+adventofcode2020/cli.py
+adventofcode2020.egg-info/PKG-INFO
+adventofcode2020.egg-info/SOURCES.txt
+adventofcode2020.egg-info/dependency_links.txt
+adventofcode2020.egg-info/entry_points.txt
+adventofcode2020.egg-info/requires.txt
+adventofcode2020.egg-info/top_level.txt
+adventofcode2020/solutions/__init__.py
+adventofcode2020/solutions/day01a.py
+adventofcode2020/solutions/day01b.py
+adventofcode2020/solutions/day02a.py
+adventofcode2020/solutions/day02b.py
