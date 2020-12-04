@@ -4,7 +4,6 @@ from os import path
 import click
 
 
-# noinspection PyUnresolvedReferences
 @click.command()
 @click.argument('day', type=click.IntRange(1, 25))
 @click.argument('part', type=click.Choice(['a', 'b']))
@@ -32,13 +31,14 @@ def cli(ctx, day, part):
         else:
             raise FileNotFoundError(f'Could not find the expected input file: {challenge}.txt')
 
-    except ModuleNotFoundError as e:
+    except ModuleNotFoundError:
         click.echo('Error: The module for this day does not exist.')
         click.echo(f'Make sure a module named {challenge}.py has been add to solutions.')
         ctx.abort()
     except FileNotFoundError as e:
         click.echo(e)
         ctx.abort()
-    except AttributeError as e:
+    except AttributeError:
         click.echo(
             'Error: A valid solution module must have a main() function that takes a file object as a parameter.')
+        ctx.abort()

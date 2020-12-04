@@ -2,19 +2,18 @@ import math
 from typing import IO, List
 
 
-def get_tree_hits(dy: int, dx: int, field_input_rows: List[str]):
-    field_height = len(field_input_rows)
+def get_tree_hits(dy: int, dx: int, base_field_rows: List[str]):
+    field_height = len(base_field_rows)
     total_steps = math.ceil(field_height / dy)
-    field_repeats = math.ceil((total_steps * dx) / len(field_input_rows[0]))
+    field_repeats = math.ceil((total_steps * dx) / len(base_field_rows[0]))
 
-    for idx in range(len(field_input_rows)):
-        field_input_rows[idx] = field_input_rows[idx] * field_repeats
+    full_field = [base_field_rows[idx] * field_repeats for idx in range(len(base_field_rows))]
 
     trees_hit = 0
 
     for step in range(total_steps):
         x, y = (step * dx, step * dy)
-        if field_input_rows[y][x] == '#':
+        if full_field[y][x] == '#':
             trees_hit += 1
 
     return trees_hit

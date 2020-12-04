@@ -16,8 +16,7 @@ def main(input_file: IO):
     product_of_hits = 1
 
     for slope in slopes:
-        trees_hit = get_tree_hits(slope['dy'], slope['dx'], field_input_rows=rows.copy())
-        print(trees_hit)
+        trees_hit = get_tree_hits(slope['dy'], slope['dx'], base_field_rows=rows.copy())
         product_of_hits *= trees_hit
 
     print('The answer for Day 03 Part B :', product_of_hits)
