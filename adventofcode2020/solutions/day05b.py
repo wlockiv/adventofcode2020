@@ -21,13 +21,12 @@ def main(input_file: IO):
         seat_ids.append(id_from_binary(bp))
 
     seat_ids.sort()
-    cursor = seat_ids[0]
     my_seat_id = 0
 
-    for seat_id in seat_ids:
-        if cursor != seat_id:
-            my_seat_id = cursor
+    for idx, seat_id in enumerate(seat_ids):
+        diff = (seat_ids[idx + 1] - seat_id)
+        if diff == 2:
+            my_seat_id = seat_id + 1
             break
-        cursor += 1
 
-    print('The answer for Day 05 Part A :', my_seat_id)
+    print('The answer for Day 05 Part B :', my_seat_id)
