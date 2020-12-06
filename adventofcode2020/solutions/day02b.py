@@ -16,4 +16,4 @@ def main(input_file):
         elif char_a != char == char_b:
             valid_password_count += 1
 
-    print('The answer for Day 02 Part B:', valid_password_count)
+    print('The answer for Day 02 Part B :', valid_password_count)

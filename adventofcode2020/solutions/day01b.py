@@ -14,4 +14,4 @@ def main(input_file):
                 sum_equals_2020 = (i, j, difference)
                 break
 
-    print('The answer for Day 02 Part B:', sum_equals_2020[0] * sum_equals_2020[1] * sum_equals_2020[2])
+    print('The answer for Day 01 Part B :', sum_equals_2020[0] * sum_equals_2020[1] * sum_equals_2020[2])

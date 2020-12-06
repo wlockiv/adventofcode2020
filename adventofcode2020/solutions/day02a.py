@@ -11,4 +11,4 @@ def main(input_file):
         if int(minmax[0]) <= password.count(char) <= int(minmax[1]):
             valid_password_count += 1
 
-    print('The answer for Day 02 Part A:', valid_password_count)
+    print('The answer for Day 02 Part A :', valid_password_count)
