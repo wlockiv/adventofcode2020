@@ -2,7 +2,7 @@ import math
 from typing import IO, Dict, Tuple
 
 
-def binary_locate(binary_input: str, input_map: Dict, _range=Tuple[int]) -> int:
+def binary_locate(binary_input: str, input_map: Dict, _range=None) -> int:
     if not _range:
         _range = (0, 2 ** len(binary_input) - 1)
 
