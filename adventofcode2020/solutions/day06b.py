@@ -8,15 +8,16 @@ def main(input_file: IO):
 
     for group in declarations:
         response_counts = {}
+        group_response = [list(p) for p in group.split('\n')]
 
-        for person in group.split('\n'):
-            for letter in list(person):
-                if not response_counts.get(letter, None):
-                    response_counts[letter] = 1
-                else:
+        for individual_response in group_response:
+            for letter in individual_response:
+                if response_counts.get(letter):
                     response_counts[letter] += 1
+                    continue
+                response_counts[letter] = 1
 
-        for ans, count in response_counts.items():
+        for letter, count in response_counts.items():
             if count == len(group.split('\n')):
                 answer_counts += 1
 
