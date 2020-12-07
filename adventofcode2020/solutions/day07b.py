@@ -1,5 +1,6 @@
 from typing import IO
 
+# This solution was inspired by: https://github.com/VitaminJai/AOC2020/blob/main/Day7/day7.2.py
 
 def parse_input_to_graph(input_lines):
     graph = {}
