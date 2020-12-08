@@ -1,11 +1,11 @@
-from typing import IO, List
+from typing import IO, Set
 
 from .day08a import Decoder, Instruction
 
 
 class DecoderB(Decoder):
     # TODO: Convert attempted_swaps to set()?
-    attempted_swaps: List[Instruction] = []
+    attempted_swaps: Set[Instruction] = set()
     cmd_swap_map = {'jmp': 'nop', 'nop': 'jmp'}
     already_swapped = False
 
@@ -16,7 +16,7 @@ class DecoderB(Decoder):
         self.already_swapped = False
 
     def swap(self):
-        self.attempted_swaps.append(self.current_instruction)
+        self.attempted_swaps.add(self.current_instruction)
         self.already_swapped = True
 
         idx, cmd, arg = self.current_instruction
@@ -30,7 +30,10 @@ class DecoderB(Decoder):
 
             idx, cmd, arg = self.current_instruction
 
-            if not self.already_swapped and cmd in self.cmd_swap_map and self.current_instruction not in self.attempted_swaps:
+            swappable = cmd in self.cmd_swap_map
+            not_yet_attempted = self.current_instruction not in self.attempted_swaps
+
+            if not self.already_swapped and swappable and not_yet_attempted:
                 self.swap()
                 cmd = self.current_instruction[1]
 
