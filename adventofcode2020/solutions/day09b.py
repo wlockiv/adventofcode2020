@@ -4,16 +4,11 @@ from .day09a import Decryptor as DecryptorA
 
 
 class Decryptor(DecryptorA):
-    @staticmethod
-    def is_contiguous(lst) -> bool:
-        if len(lst) < 2:
-            return False
-        for i in range(len(lst)):
-            if lst[0] + i != lst[i]:
-                return False
-        return True
-
     def find_weakness(self, target: int) -> int:
+        """
+        Finds a set of contiguous data points which add to the target value, then returns the suM of the min and
+        max from that list.
+        """
         for right_bound in range(len(self.data)):
             acc = 0
             values = []
