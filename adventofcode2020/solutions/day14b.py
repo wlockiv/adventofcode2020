@@ -28,4 +28,4 @@ def main(input_file: IO):
                     new_address[pos] = str(m)
                 memory[''.join(new_address)] = int(val)
 
-    print(sum(memory.values()))
+    print('The answer for Day 14 Part B :', sum(memory.values()))
