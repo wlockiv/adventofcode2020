@@ -1,30 +1,23 @@
-import math
-from typing import IO, Dict
+from typing import IO
+
+
+# Inspired by:
+# https://www.reddit.com/r/adventofcode/comments/kc4njx/2020_day_13_solutions/gfth69h?utm_source=share&utm_medium=web2x&context=3
 
 
 def main(input_file: IO):
     # Input Parsing
     input_lines = input_file.read().split('\n')
-    ids = [int(i) if i != 'x' else 0 for i in input_lines[1].split(',')]
-    offsets = list(range(len(ids)))
-    offset_map = {_id: offset for offset, _id in zip(offsets, ids) if _id != 0}
-    ids = list(filter(lambda x: x != 0, ids))
+    buses = input_lines[1].split(',')
+    ids = [(int(buses[i]), i) for i in range(len(buses)) if buses[i] != 'x']
 
-    step = ids.pop(0)
-    t = step
-    finished = False
-    while not finished:
-        # print(t)
-        for _id in ids:
-            current_t = math.ceil(t / _id) * _id
-            if t + offset_map[_id] != current_t:
-                t += step
-                finished = False
-                break
-            else:
-                print(f'{t} - {current_t} == {offset_map[_id]}')
-                finished = True
+    lcm = 1
+    time = 0
+    for i in range(len(ids) - 1):
+        bus_id = ids[i + 1][0]
+        offset = ids[i + 1][1]
+        lcm *= ids[i][0]
+        while (time + offset) % bus_id != 0:
+            time += lcm
 
-    offset_of_step = max(offset_map, key=offset_map.get)
-    result = t - offset_of_step
-    print('The answer for Day 13 Part B :', result)
+    print('The answer for Day 13 Part B :', time)
