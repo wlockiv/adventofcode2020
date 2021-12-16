@@ -1,7 +1,7 @@
 from typing import IO, List, Set
 
 
-def generate_messages(instructions: dict, num="0", memo={}):
+def generate_messages(instructions: dict, max_len, num="0", memo={}):
     if isinstance(instructions[num], str):
         return instructions[num]
 
@@ -12,7 +12,7 @@ def generate_messages(instructions: dict, num="0", memo={}):
     for options in instructions[num]:
         strs = []
         for rule in options:
-            sub_opts = generate_messages(instructions, rule)
+            sub_opts = generate_messages(instructions, max_len, rule)
 
             if not strs:
                 strs.extend(sub_opts)
@@ -24,6 +24,10 @@ def generate_messages(instructions: dict, num="0", memo={}):
                 strs = combined.copy()
 
         result += strs
+
+        if len(result) > max_len:
+            result += [""]
+            return result
 
     memo[num] = result
     return result
@@ -37,9 +41,15 @@ def main(input_file: IO):
     messages = []
 
     instruction_toggle = False
+    max_msg_len = 0
     for line in raw_input:
         if not line:
             instruction_toggle = True
+
+        if line == '8: 42':
+            line = '8: 42 | 42 8'
+        elif line == '11: 42 31':
+            line = '11: 42 31 | 42 11 31'
 
         if not instruction_toggle:
             number, raw_value = line.split(': ')
@@ -51,9 +61,12 @@ def main(input_file: IO):
                 instructions[number] = raw_value[1:-1]
 
         else:
+            max_msg_len = len(line) if len(line) > max_msg_len else max_msg_len
             messages.append(line)
 
-    possibilities = set(generate_messages(instructions))
+    possibilities = set(generate_messages(instructions, max_msg_len))
+
+    print(len(possibilities))
 
     count = 0
     for m in messages:

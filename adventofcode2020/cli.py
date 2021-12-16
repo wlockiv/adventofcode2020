@@ -53,10 +53,10 @@ def run(day, part, silent_fail):
     except FileNotFoundError as e:
         if not silent_fail:
             click.echo(e)
-    except AttributeError:
-        if not silent_fail:
-            click.echo(
-                'Error: A valid solution module must have a main() function that takes a file object as a parameter.')
+    # except AttributeError as e:
+    #     if not silent_fail:
+    #         click.echo(
+    #             'Error: A valid solution module must have a main() function that takes a file object as a parameter.')
 
 
 @cli.command()
