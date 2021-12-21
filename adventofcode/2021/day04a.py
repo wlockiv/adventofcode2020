@@ -17,13 +17,6 @@ class CardNumber:
 
 
 class BingoCard:
-    #   r0 1 2 3 4
-    # c0 0 0 0 0 0
-    #  1 0 0 0 0 0
-    #  2 0 0 0 0 0
-    #  3 0 0 0 0 0
-    #  4 0 0 0 0 0
-
     card_numbers: List[CardNumber]
     called_row_counts: List[int]
     called_col_counts: List[int]
@@ -38,11 +31,11 @@ class BingoCard:
         return int(math.sqrt(len(self.card_numbers)))
 
     @property
-    def has_bingo(self) -> Tuple[List[bool], List[bool]]:
+    def has_bingo(self) -> bool:
         row_bingos = [i == self.card_size for i in self.called_row_counts]
         col_bingos = [i == self.card_size for i in self.called_col_counts]
 
-        return row_bingos, col_bingos
+        return any(row_bingos) or any(col_bingos)
 
     @property
     def col_sums(self) -> List[int]:
@@ -70,6 +63,18 @@ class BingoCard:
                 break
 
 
+def parse_raw_cards(raw_cards: str) -> List[BingoCard]:
+    result = []
+    for raw_card in raw_cards:
+        card_numbers: List[CardNumber] = []
+        for row_num, row in enumerate(raw_card.split('\n')):
+            for col_num, num in enumerate([int(n) for n in re.findall(r'\s?\d+', row)]):
+                card_numbers.append(CardNumber(row_num, col_num, num))
+        result.append(BingoCard(card_numbers))
+
+    return result
+
+
 def main(input_file: IO):
     input_raw = input_file.read()
     input_groups = input_raw.split('\n\n')
@@ -77,22 +82,15 @@ def main(input_file: IO):
     raw_cards = input_groups[1:]
 
     # Set up the bingo card
-    cards: List[BingoCard] = []
-    for raw_card in raw_cards:
-        card_numbers: List[CardNumber] = []
-        for row_num, row in enumerate(raw_card.split('\n')):
-            for col_num, num in enumerate([int(n) for n in re.findall(r'\s?\d+', row)]):
-                card_numbers.append(CardNumber(row_num, col_num, num))
-        cards.append(BingoCard(card_numbers))
+    cards: List[BingoCard] = parse_raw_cards(raw_cards)
 
     bingod_card: Optional[BingoCard] = None
     bingod_call_num: Optional[int] = None
     for call_num in numbers_to_call:
         for idx, card in enumerate(cards):
             card.call_number(call_num)
-            row_bingo, col_bingo = card.has_bingo
 
-            if any(row_bingo) or any(col_bingo):
+            if card.has_bingo:
                 bingod_card = card
                 bingod_call_num = call_num
                 break
