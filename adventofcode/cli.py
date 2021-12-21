@@ -37,7 +37,7 @@ def run(day, part, year, silent_fail):
 
     try:
         solution = import_module(
-            f'.2020.solutions.day{str(day).zfill(2)}{part}',
+            f'.{year}.day{str(day).zfill(2)}{part}',
             f'adventofcode').main
 
         input_dir = f'./inputs/{year}'
