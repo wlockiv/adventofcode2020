@@ -1,3 +1,4 @@
+from datetime import date
 import math
 import time
 from importlib import import_module
@@ -5,6 +6,7 @@ from os import path
 from typing import Callable, IO
 
 import click
+from click.types import DateTime
 
 
 def call_timed(solution_fn: Callable, input_file: IO):
@@ -22,10 +24,12 @@ def cli():
 @cli.command()
 @click.argument('day', type=click.IntRange(1, 25))
 @click.argument('part', type=click.Choice(['a', 'b']))
+@click.option('-y', '--year', type=click.INT, default=(date.today().year))
 @click.option('--silent-fail', is_flag=True)
-def run(day, part, silent_fail):
+def run(day, part, year, silent_fail):
     """Executes an AdventOfCode2020 solution.
 
+    YEAR is the year of the challenge (2020, 2021, etc).
     DAY is the day of the challenge (1-25).
     PART is the challenge part (a or b).
     """
@@ -33,17 +37,18 @@ def run(day, part, silent_fail):
 
     try:
         solution = import_module(
-            f'.solutions.day{str(day).zfill(2)}{part}',
-            f'adventofcode2020').main
+            f'.2020.solutions.day{str(day).zfill(2)}{part}',
+            f'adventofcode').main
 
-        if path.isfile(f'./inputs/{challenge}.txt'):
-            with open(f'./inputs/{challenge}.txt') as input_file:
+        input_dir = f'./inputs/{year}'
+        if path.isfile(f'{input_dir}/{challenge}.txt'):
+            with open(f'{input_dir}/{challenge}.txt') as input_file:
                 call_timed(solution, input_file)
-        elif path.isfile(f'./inputs/{challenge[:-1]}a.txt') and part == 'b':
-            with open(f'./inputs/{challenge[:-1]}a.txt') as input_file:
+        elif path.isfile(f'{input_dir}/{challenge[:-1]}a.txt') and part == 'b':
+            with open(f'{input_dir}/{challenge[:-1]}a.txt') as input_file:
                 call_timed(solution, input_file)
         else:
-            raise FileNotFoundError(f'Could not find the expected input file: {challenge}.txt')
+            raise FileNotFoundError(f'Could not find the expected input file for: {year}/{challenge}.txt')
 
     except ModuleNotFoundError:
         if silent_fail:
@@ -53,10 +58,6 @@ def run(day, part, silent_fail):
     except FileNotFoundError as e:
         if not silent_fail:
             click.echo(e)
-    # except AttributeError as e:
-    #     if not silent_fail:
-    #         click.echo(
-    #             'Error: A valid solution module must have a main() function that takes a file object as a parameter.')
 
 
 @cli.command()
