@@ -2,11 +2,13 @@ from datetime import date
 import math
 import time
 from importlib import import_module
-from os import path
+import os
 from typing import Callable, IO
 
 import click
 from click.types import DateTime
+
+from adventofcode.util import copy_template_file
 
 
 def call_timed(solution_fn: Callable, input_file: IO):
@@ -48,13 +50,15 @@ def run(day, part, year, silent_fail):
             with open(f'{input_dir}/{challenge[:-1]}a.txt') as input_file:
                 call_timed(solution, input_file)
         else:
-            raise FileNotFoundError(f'Could not find the expected input file for: {year}/{challenge}.txt')
+            raise FileNotFoundError(
+                f'Could not find the expected input file for: {year}/{challenge}.txt')
 
     except ModuleNotFoundError:
         if silent_fail:
             raise ModuleNotFoundError
         click.echo('Error: The module for this day does not exist.')
-        click.echo(f'Make sure a module named {challenge}.py has been add to solutions.')
+        click.echo(
+            f'Make sure a module named {challenge}.py has been add to solutions.')
     except FileNotFoundError as e:
         if not silent_fail:
             click.echo(e)
@@ -75,3 +79,21 @@ def run_all(ctx: click.Context):
                 click.echo('---')
                 click.echo(f'Reached the end at Day {day} Part {part.upper()}')
                 exit()
+
+
+@cli.command()
+@click.argument('day', type=click.IntRange(1, 25))
+@click.argument('part', type=click.Choice(['a', 'b']))
+@click.option('-y', '--year', type=click.INT, default=(date.today().year))
+def make(day, part, year):
+    """Creates a solution file."""
+    solution_destination = copy_template_file(year, day, part)
+
+    input_destination = f'./inputs/{year}/day{str(day).zfill(2)}a.txt'
+    with open(input_destination, 'a') as f:
+        pass
+
+    click.echo(
+        f'The solution module and input file for Day {day}, Part {part} of {year} have been made!')
+    click.echo(f'\t Solution: {solution_destination}')
+    click.echo(f'\t    Input: {input_destination}')
