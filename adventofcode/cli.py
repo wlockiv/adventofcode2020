@@ -43,10 +43,10 @@ def run(day, part, year, silent_fail):
             f'adventofcode').main
 
         input_dir = f'./inputs/{year}'
-        if path.isfile(f'{input_dir}/{challenge}.txt'):
+        if os.path.isfile(f'{input_dir}/{challenge}.txt'):
             with open(f'{input_dir}/{challenge}.txt') as input_file:
                 call_timed(solution, input_file)
-        elif path.isfile(f'{input_dir}/{challenge[:-1]}a.txt') and part == 'b':
+        elif os.path.isfile(f'{input_dir}/{challenge[:-1]}a.txt') and part == 'b':
             with open(f'{input_dir}/{challenge[:-1]}a.txt') as input_file:
                 call_timed(solution, input_file)
         else:
