@@ -1,42 +1,7 @@
-from typing import IO, List, Dict, Tuple
+# ADAPTED FOR BITWISE FROM: https://github.com/simonbrahan/aoc2021/blob/master/08/part2.py
+
+from typing import IO, List, Tuple
 from adventofcode.util import print_solution
-
-# gfedcba
-# 1110111 - 0
-# 0100100 - 1
-# 1011101 - 2
-# 1101101 - 3
-# 0101110 - 4
-# 1101011 - 5
-# 1111011 - 6
-# 0100101 - 7
-# 1111111 - 8
-# 1101111 - 9
-
-
-masks = {
-    "a": 1,
-    "b": 2,
-    "c": 4,
-    "d": 8,
-    "e": 16,
-    "f": 32,
-    "g": 64
-}
-
-
-def deduce_key(input: str, knowns={}) -> dict:
-    # edbfga begcd cbg(7) gc(1) gcadebf fbgde acbgfd abcde gfcbed gfec(4) |
-    # fcgedb cgb(7) dgebacf(8) gc(1)
-
-    key = {k: None for k in range(10)}
-    patterns, output = [i.split(' ') for i in input.split(' | ')]
-    patterns = [set(''.join(sorted([l for l in p]))) for p in patterns]
-    output = []
-
-    key = {"A": 0, "B": 0, "C": 0, "D": 0, "E": 0, "F": 0, "G": 0}
-
-    return {}
 
 
 def letters_to_bits(digit: str) -> int:
