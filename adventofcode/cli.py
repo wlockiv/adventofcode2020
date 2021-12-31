@@ -1,5 +1,6 @@
 from datetime import date
 import math
+import re
 import time
 from importlib import import_module
 import os
@@ -53,12 +54,15 @@ def run(day, part, year, silent_fail):
             raise FileNotFoundError(
                 f'Could not find the expected input file for: {year}/{challenge}.txt')
 
-    except ModuleNotFoundError:
+    except ModuleNotFoundError as e:
         if silent_fail:
             raise ModuleNotFoundError
-        click.echo('Error: The module for this day does not exist.')
-        click.echo(
-            f'Make sure a module named {challenge}.py has been add to solutions.')
+        if re.search(r'adventofcode\.\d{4}\.day\d{2}[ab]', e.msg):
+            click.echo('Error: The module for this day does not exist.')
+            click.echo(
+                f'Make sure a module named {challenge}.py has been add to solutions.')
+        else:
+            click.echo('ModuleNoteFoundError: ' + e.msg)
     except FileNotFoundError as e:
         if not silent_fail:
             click.echo(e)
@@ -66,7 +70,8 @@ def run(day, part, year, silent_fail):
 
 @cli.command()
 @click.pass_context
-def run_all(ctx: click.Context):
+@click.option('-y', '--year', type=click.INT, default=(date.today().year))
+def run_all(ctx: click.Context, year):
     """Executes all Advent of Code Solutions."""
     day_range = list(range(1, 26))
     parts = ('a', 'b')
@@ -74,10 +79,12 @@ def run_all(ctx: click.Context):
     for day in day_range:
         for part in parts:
             try:
-                ctx.invoke(run, day=day, part=part, silent_fail=True)
+                ctx.invoke(run, day=day, part=part,
+                           year=year, silent_fail=True)
             except ModuleNotFoundError:
                 click.echo('---')
-                click.echo(f'Reached the end at Day {day} Part {part.upper()}')
+                click.echo(
+                    f'Reached the end at Year {year}, Day {day}, Part {part.upper()}')
                 exit()
 
 

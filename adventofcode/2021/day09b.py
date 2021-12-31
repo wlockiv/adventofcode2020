@@ -46,6 +46,5 @@ def main(input_file: IO):
         basin_sizes.append(len(basin))
 
     basin_sizes.sort(reverse=True)
-    print(prod(basin_sizes[:3]))
 
-    # print_solution(str(sum(low_points) + len(low_points)))
+    print_solution(str(prod(basin_sizes[:3])))
